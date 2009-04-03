@@ -51,13 +51,13 @@ class low_cp
 	// -------------------------------- 
 	function global_cp_fixes($out)
 	{
-		global $EXT, $IN;
-		
-		// Play nice with others
-		$out = ($EXT->last_call !== FALSE) ? $EXT->last_call : $out;
-		
+		// get last call
+		$out = $this->_get_last_call($out);
+
 		// output check
 		if (REQ != 'CP') return $out;
+	
+		global $IN;
 	
 		$C = $IN->GBL('C','GET');
 		$M = $IN->GBL('M','GET');
@@ -129,6 +129,9 @@ class low_cp
 	// -------------------------------- 
 	function fix_edit_list_thead($thead)
 	{
+		// get last call
+		$thead = $this->_get_last_call($thead);
+
 		global $LANG;
 		return preg_replace('/(.*)<td.*'.$LANG->line('trackbacks').'.*?<\/td>/is','$1',$thead);
 	}
@@ -140,6 +143,9 @@ class low_cp
 	// -------------------------------- 
 	function fix_edit_list_tbody($row)
 	{
+		// get last call
+		$row = $this->_get_last_call($row);
+
 		return preg_replace('/(.*)<td.*?view_trackbacks.*?<\/td>/is', '$1', $row);
 	}
 	// END fix_edit_list_tbody()
@@ -214,6 +220,22 @@ class low_cp
 		}
 	}
 	// END fix_unique_url_title()
+
+
+
+	/**
+	 * Get Last Call
+	 *
+	 * @param  mixed  $param  Parameter sent by extension hook
+	 * @return mixed  Return value of last extension call if any, or $param
+	 * @access private
+	 * @author Brandon Kelly <me@brandon-kelly.com>
+	 */
+	function _get_last_call($param=FALSE)
+	{
+		global $EXT;
+		return $EXT->last_call !== FALSE ? $EXT->last_call : $param;
+	}
 
 
 	
