@@ -21,7 +21,7 @@ class low_cp
 	var $settings			= array();
 
 	var $name				= 'Low CP';
-	var $version			= '1.0.1';
+	var $version			= '1.0.2';
 	var $description		= 'Control Panel according to Low';
 	var $settings_exist		= 'n';
 	var $docs_url			= '';
@@ -51,10 +51,13 @@ class low_cp
 	// -------------------------------- 
 	function global_cp_fixes($out)
 	{
+		global $EXT, $IN;
+		
+		// Play nice with others
+		$out = ($EXT->last_call !== FALSE) ? $EXT->last_call : $out;
+		
 		// output check
 		if (REQ != 'CP') return $out;
-	
-		global $IN;
 	
 		$C = $IN->GBL('C','GET');
 		$M = $IN->GBL('M','GET');
